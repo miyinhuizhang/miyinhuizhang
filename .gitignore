@@ -1,0 +1,75 @@
+package test;
+import java.util.Random;
+public class test {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method 
+		int[] a1 = new int[30];
+		int[] a2 = new int[30];
+		int[] b1 = new int[30];
+		int[] b2 = new int[30];
+		int[] c = new int[30];
+		int d;
+		String[] sz1 = new String[30];
+		String[] sz2 = new String[30];
+		
+		for(int i=0;i<30;i++)
+		{
+			Random rand = new Random();
+			a1[i]=rand.nextInt(100)+1;   //前一个数的分子
+			a2[i]=rand.nextInt(100)+1;   //前一个数的分母
+			b1[i]=rand.nextInt(100)+1;   //后一个数的分子
+			b2[i]=rand.nextInt(100)+1;   //后一个数的分母
+			c[i]=rand.nextInt(4);    //符号的随机代表数
+			
+			d=rand.nextInt(2);    //整数和分数的随机代表数
+			if(d==0)
+				if(a1[i]>a2[i])
+					sz1[i]=" "+a1[i]+"/"+a2[i];
+				else
+					if(a1[i]<a2[i])
+						sz1[i]=" "+a2[i]+"/"+a1[i];
+					else
+						sz1[i]=" "+a1[i];
+			else 
+				sz1[i]=" "+a1[i];
+			
+			d=rand.nextInt(2);    //整数和分数的随机代表数
+			if(d==0)
+				if(b1[i]>b2[i])
+					sz2[i]=" "+b1[i]+"/"+b2[i];
+				else
+					if(b1[i]<b2[i])
+						sz2[i]=" "+b2[i]+"/"+b1[i];
+					else
+						sz2[i]=" "+b1[i];
+			else 
+				sz2[i]=" "+b1[i];
+			
+			for(int j=0;j<i;j++)
+			{   //检查是否有重复的算式
+				if(sz1[i]==sz1[j])    //检查前一个数是否重复
+					if(sz2[i]==sz2[j])    //检查后一个数是否重复
+						if(c[i]==c[j])    //检查运算符号是否重复
+						{
+							a1[i]=rand.nextInt(100)+1;
+							a2[i]=rand.nextInt(100)+1;
+							d=rand.nextInt(2);    //整数和分数的随机代表数
+							if(d==0)
+								sz1[i]=" "+a1[i]+"/"+a2[i];
+							else 
+								sz1[i]=" "+a1[i];
+						}
+			}
+			
+			if(c[i]==0)    //如果符号的随机代表数是0，符号为+
+				System.out.println(i+1+":"+sz1[i]+" +"+sz2[i]+"=");
+			if(c[i]==1)    //如果符号的随机代表数是1，符号为-
+				System.out.println(i+1+":"+sz1[i]+" -"+sz2[i]+"=");
+			if(c[i]==2)    //如果符号的随机代表数是2，符号为*
+				System.out.println(i+1+":"+sz1[i]+" *"+sz2[i]+"=");
+			if(c[i]==3)    //如果符号的随机代表数是3，符号为/
+				System.out.println(i+1+":"+sz1[i]+" /"+sz2[i]+"=");
+		}
+	}
+}
