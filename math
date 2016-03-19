@@ -1,0 +1,141 @@
+package math;
+import java.util.Random;
+import java.util.Scanner;
+public class math{
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method 
+		Scanner in=new Scanner(System.in);
+		String output="";
+		System.out.println("请输入题目个数：");  //输入提示
+		int num = in.nextInt();  //输入题目个数
+		System.out.println("请输入取值范围：(小于100)");  //输入提示
+		int rnum = in.nextInt();  //输入取值范围
+		System.out.println("请输入是否有正负数：(1.有 2.没有)");  //输入提示
+		int zfnum = in.nextInt();  //输入是否有正负数
+		System.out.println("除法是否有余数：(3.有 4.没有)");  //输入提示
+		int ys=in.nextInt();  //输入是否有余数
+		System.out.println("请输入是否有乘除法：(5.有 6.没有)");  //输入提示
+		int fhn = in.nextInt();  //输入是否有乘除法
+		System.out.println("请输入是否有括号：(7.有 8.没有)");  //输入提示
+		int kh = in.nextInt();  //输入是否有括号
+		Random random =new Random();
+		int[][]sz=new int[num][10];
+		int f=0;    //正负数的数字表示
+		int fhnum=0;    //运算符号的数字表示
+		char zf=' ';    //正负数的符号表示
+		char[][] fh=new char[num][10];    //运算符号的符号表示
+		int jl;   //记录除法的位置
+		int kh1,kh2;   //记录括号的位置
+		for(int l=0;l<num;l++)
+		{
+			int sznum=2+random.nextInt(9);   //每道题的数字个数 2-10
+			for(int i=0;i<=sznum;i++)   //生成数字
+			{
+				sz[l][i]=random.nextInt(100)+1;	
+				for(;;)      //控制数的范围
+				{
+					if(sz[l][i]>rnum)
+						sz[l][i]=random.nextInt(100)+1;
+					else
+						break;
+				}
+			}
+			for(int i=0;i<=sznum;i++)    //生成运算符号
+			{
+				if(fhn==5)   //计算有乘除法
+				{
+					fhnum=random.nextInt(4);
+					if(fhnum==0)
+						fh[l][i]='+';
+					if(fhnum==1)
+						fh[l][i]='-';
+					if(fhnum==2)
+						fh[l][i]='*';
+					if(fhnum==3)
+					{
+						fh[l][i]='/';
+						if(ys==3)   //计算除法时有余数
+						{
+							jl=i;   //确定除法符号的位置
+							for(;;)
+							{
+								if(sz[l][i]%sz[l][i+1]!=0)
+									break;
+								else 
+								{
+									sz[l][i]=random.nextInt(100)+1;
+									sz[l][i+1]=random.nextInt(100)+1;
+								}
+							}
+						}
+						if(ys==4)     //计算除法时有余数
+						{
+							jl=i;   //确定除法符号的位置
+							for(;;)
+							{
+								if(sz[l][i]%sz[l][i+1]!=0)
+								{
+									sz[l][i]=random.nextInt(100)+1;
+									sz[l][i+1]=random.nextInt(100)+1;
+								}
+								else 
+									break;
+							}
+						}
+					}
+				}
+				if(fhn==6)   //计算无乘除法
+				{
+					fhnum=random.nextInt(2);
+					if(fhnum==0)
+						fh[l][i]='+';
+					if(fhnum==1)
+						fh[l][i]='-';
+				}
+			}
+			fh[l][sznum]='=';
+			System.out.print(l+1+": ");
+			if(kh==7)  //有括号时
+			{
+				kh1=random.nextInt(sznum-1)+1;
+				for(int i=0;i<kh1;i++)
+				{
+					if(zfnum==1)  //计算有负数
+						f=random.nextInt(2);
+					if(f==0)     //正数
+						zf='+';
+					if(f==1)     //负数
+						zf='-';
+					System.out.print("("+zf+sz[l][i]+")"+fh[l][i]);
+				}
+				System.out.print("(("+zf+sz[l][kh1]+")"+fh[l][kh1]+"("+zf+sz[l][kh1+1]+"))"+fh[l][kh1+1]);
+				for(int i=kh1+2;i<=sznum;i++)
+				{
+					if(zfnum==1)  //计算有负数
+						f=random.nextInt(2);
+					if(f==0)     //正数
+						zf='+';
+					if(f==1)     //负数
+						zf='-';
+					System.out.print("("+zf+sz[l][i]+")"+fh[l][i]);
+				}
+				System.out.println();
+			}
+			if(kh==8)    //没有括号时
+			{
+				for(int i=0;i<=sznum;i++)
+				{
+					if(zfnum==1)  //计算有负数
+						f=random.nextInt(2);
+					if(f==0)     //正数
+						zf='+';
+					if(f==1)     //负数
+						zf='-';
+					System.out.print("("+zf+sz[l][i]+")"+fh[l][i]);
+				}
+				System.out.println();
+			}
+		}
+	}
+}
