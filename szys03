@@ -1,0 +1,220 @@
+#include<iostream>
+#include<ctime>
+#include<cstdlib>
+using namespace std;
+void main()
+{
+	int num;  //输入题目个数
+	int rnum;  //输入取值范围
+	int zfnum;  //输入是否有正负数
+	int ys;  //输入是否有余数
+	int fhn;  //输入是否有乘除法
+	int kh;   //输入是否有括号
+	cout<<"请输入题目个数："<<endl;  //输入提示
+	cin>>num;	  //输入题目个数
+	cout<<"请输入取值范围：(小于100)"<<endl;  //输入提示
+	cin>>rnum;  //输入取值范围
+	cout<<"请输入是否有正负数：(1.有 2.没有)"<<endl;  //输入提示
+	cin>>zfnum;  //输入是否有正负数
+	cout<<"除法是否有余数：(3.有 4.没有)"<<endl;  //输入提示
+	cin>>ys;  //输入是否有余数
+	cout<<"请输入是否有乘除法：(5.有 6.没有)"<<endl;  //输入提示
+	cin>>fhn;  //输入是否有乘除法
+	cout<<"请输入是否有括号：(7.有 8.没有)"<<endl;  //输入提示
+	cin>>kh;  //输入是否有括号
+	int sz[10];
+	int jg,zhjg;
+	int n1=0;
+	int n2=0;
+	int f=0;    //正负数的数字表示
+	int fhnum=0;    //运算符号的数字表示
+	char zf[10]={'+'};    //正负数的符号表示
+	char fh[10];    //运算符号的符号表示
+	int jl;   //记录除法的位置
+	int kh1;   //记录括号的位置
+	srand(time(0));
+	for(int l=0;l<num;l++)
+	{
+		int sznum=rand()%9+2;   //每道题的数字个数 2-10
+		for(int i=0;i<=sznum;i++)   //生成数字
+		{
+			sz[i]=rand()%100+1;	
+			for(;;)      //控制数的范围
+			{
+				if(sz[i]>rnum)
+					sz[i]=rand()%100+1;
+				else
+					break;
+			}
+			if(zfnum==1)  //计算有负数
+				f=rand()%2;
+			if(f==1)     //负数
+				zf[i]='-';
+			if(zf[i]=='-')
+				sz[i]=sz[i]*(-1);
+		}
+		for(int i=0;i<sznum;i++)    //生成运算符号
+		{
+			if(fhn==5)   //计算有乘除法
+			{
+				fhnum=rand()%4;
+				if(fhnum==0)
+					fh[i]='+';
+				if(fhnum==1)
+					fh[i]='-';
+				if(fhnum==2)
+					fh[i]='*';
+				if(fhnum==3)
+				{
+					fh[i]='/';
+					if(ys==3)   //计算除法时有余数
+					{
+						jl=i;   //确定除法符号的位置
+						for(;;)
+						{
+							if(sz[i]%sz[i+1]!=0)
+								break;
+							else 
+							{
+								sz[i]=rand()%100+1;
+								sz[i+1]=rand()%100+1;
+							}
+						}
+					}
+					if(ys==4)     //计算除法时没有余数
+					{
+						jl=i;   //确定除法符号的位置
+						for(;;)
+						{
+							if(sz[i]%sz[i+1]!=0)
+							{
+								sz[i]=rand()%100+1;
+								sz[i+1]=rand()%100+1;
+							}
+							else 
+								break;
+						}
+					}
+				}
+			}
+			if(fhn==6)   //计算无乘除法
+			{
+				fhnum=rand()%2;
+				if(fhnum==0)
+					fh[i]='+';
+				if(fhnum==1)
+					fh[i]='-';
+			}
+		}
+		cout<<l+1<<": "<<sz[0];
+		if(sznum==2)   //如果一个题只有2个数字时不加括号
+			kh=8;
+		if(kh==7)  //有括号时
+		{
+			kh1=rand()%(sznum-2)+1;    //对符号位置设置随机数，进行括号位置的确定
+			for(int i=0;i<kh1-1;i++)
+			{
+				cout<<fh[i]<<sz[i+1];
+			}
+			cout<<fh[kh1-1]<<"("<<sz[kh1]<<fh[kh1]<<sz[kh1+1]<<")";
+			for(int i=kh1+1;i<sznum;i++)
+			{
+				cout<<fh[i]<<sz[i+1];
+			}
+			jg=sz[0];
+			//计算括号里的结果
+			if(fh[kh1]=='+')
+			{
+				sz[kh1]=sz[kh1]+sz[kh1+1];
+				sz[kh1+1]=0;
+			}
+			if(fh[kh1]=='-')
+			{
+				sz[kh1]=sz[kh1]-sz[kh1+1];
+				sz[kh1+1]=0;
+			}
+			if(fh[kh1]=='*')
+			{
+				sz[kh1]=sz[kh1]*sz[kh1+1];
+				sz[kh1+1]=1;
+			}
+			if(fh[kh1]=='/')
+			{
+				sz[kh1]=sz[kh1]/sz[kh1+1];
+				sz[kh1+1]=1;
+			}
+			//先算*/
+			for(int i=0;i<sznum;i++)
+			{
+				if(fh[i]=='*')
+				{
+					sz[i]=sz[i]*sz[i+1];
+					sz[i+1]=1;
+				}
+				if(fh[i]=='/')
+				{
+					sz[i]=sz[i]/sz[i+1];
+					sz[i+1]=1;
+				}
+			}
+			//最后+ -
+			for(int i=0;i<sznum;i++)
+			{
+				if(fh[i]=='+')
+					jg=jg+sz[i+1];
+				if(fh[i]=='-')
+					jg=jg-sz[i+1];
+				if(fh[i]=='*')
+					jg=jg*sz[i+1];
+				if(fh[i]=='/')
+					jg=jg/sz[i+1];
+			}
+		}
+		if(kh==8)    //没有括号时
+		{
+			for(int i=1;i<sznum;i++)
+			{
+				cout<<fh[i]<<sz[i+1];
+			}
+			jg=sz[0];
+			for(int i=0;i<sznum;i++)
+			{
+				if(fh[i]=='*')
+				{
+					sz[i]=sz[i]*sz[i+1];
+					sz[i+1]=1;
+				}
+				if(fh[i]=='/')
+				{
+					sz[i]=sz[i]/sz[i+1];
+					sz[i+1]=1;
+				}
+			}
+			for(int i=0;i<sznum;i++)
+			{
+				if(fh[i]=='+')
+					jg=jg+sz[i+1];
+				if(fh[i]=='-')
+					jg=jg-sz[i+1];
+				if(fh[i]=='*')
+					jg=jg*sz[i+1];
+				if(fh[i]=='/')
+					jg=jg/sz[i+1];
+			}
+		}
+		cout<<"="<<endl;
+		cout<<"请输入结果，精确到整数，不足1不进位："<<endl;
+		cin>>zhjg;
+		if(zhjg-jg<0.001)
+		{
+			n1++;
+			cout<<"正确！"<<endl;
+		}
+		else
+		{
+			n2++;
+			cout<<"错误！"<<endl;
+		}
+	}
+	cout<<"正确的个数："<<n1<<",错误的个数："<<n2<<endl;
+}
