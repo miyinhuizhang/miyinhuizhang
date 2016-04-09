@@ -1,0 +1,31 @@
+#include<iostream>
+#define num 100
+using namespace std;
+void main()
+{
+	int sznum=0,sf,max,bj1,bj2;
+	int sz[num]={0};
+	cout<<"请输入数字："<<endl;
+	for(int i=0;i<num;i++)   //输入数字
+	{
+		cin>>sz[i];
+		sznum++;   //记录输入了几个数字
+		cout<<"是否继续输入：1.是2.否";
+		cin>>sf;
+		if(sf==2)
+			break;
+	}
+	bj1=sz[0];   //变量初始化
+	bj2=sz[0];   //变量初始化
+	max=sz[0];   //变量初始化
+	for(int i=1;i<=sznum;i++)
+	{  //计算子数组中的最大和
+		bj1=bj1+sz[i];   //前¡个数相加
+		if(max<bj1)    //max与前个数相加比较，取最大值
+			max=bj1;
+		if(max<bj2)   //max与前i-1个数相加比较，取最大值
+			max=bj2;
+		bj2=bj1;   //原来bj2是前个数相加,现在bj2是前个数相加
+	}
+	cout<<"子数组的最大和为："<<max<<endl;
+}
