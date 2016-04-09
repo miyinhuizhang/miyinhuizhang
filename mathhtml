@@ -1,0 +1,614 @@
+//软件工程结对作业02，小组成员：谷伟华、牛俊燕
+//HTML文件
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>四则运算</title>
+<style type="text/css">
+body,td,th {
+	font-size: larger;
+}
+body {
+	background-image: url(image/3.jpg);
+}
+</style>
+<meta http-equiv="content-type"content="text/html;chartset=UTF-8">
+
+</head>
+
+<body >
+<div style="width: 100%; font-family: 微软雅黑; text-align: center">
+      <marquee scrollamount=3  style="COLOR=000000 FILTER: shadow(color=000000 ); FONT-FAMILY: 隶书; FONT-SIZE: 25pt; WIDTH: 100%">欢迎来到四则运算乐园</marquee></div>
+<span id="localtime"></span>
+	<script type="text/javascript">
+		function showLocale(objD) {
+			var str, colorhead, colorfoot;
+			var yy = objD.getYear();
+			if (yy < 1900)
+				yy = yy + 1900;
+			var MM = objD.getMonth() + 1;
+			if (MM < 10)
+				MM = '0' + MM;
+			var dd = objD.getDate();
+			if (dd < 10)
+				dd = '0' + dd;
+			var hh = objD.getHours();
+			if (hh < 10)
+				hh = '0' + hh;
+			var mm = objD.getMinutes();
+			if (mm < 10)
+				mm = '0' + mm;
+			var ss = objD.getSeconds();
+			if (ss < 10)
+				ss = '0' + ss;
+			var ww = objD.getDay();
+			if (ww == 0)
+				colorhead = "<font color=\"#000000\">";
+			if (ww > 0 && ww < 6)
+				colorhead = "<font color=\"#000000\">";
+			if (ww == 6)
+				colorhead = "<font color=\"#000000\">";
+			if (ww == 0)
+				ww = "星期日";
+			if (ww == 1)
+				ww = "星期一";
+			if (ww == 2)
+				ww = "星期二";
+			if (ww == 3)
+				ww = "星期三";
+			if (ww == 4)
+				ww = "星期四";
+			if (ww == 5)
+				ww = "星期五";
+			if (ww == 6)
+				ww = "星期六";
+			colorfoot = "</font>"
+			str = colorhead + yy + "-" + MM + "-" + dd + " " + hh + ":" + mm
+					+ ":" + ss + "  " + ww + colorfoot;
+			return (str);
+		}
+		function tick() {
+			var today;
+			today = new Date();
+			document.getElementById("localtime").innerHTML = showLocale(today);
+			window.setTimeout("tick()", 1000);
+		}
+		tick();
+	</script>
+	<br />
+
+<h1 align="center">题目选择</h1>
+<p>
+  <from action="四则运算网页版.jsp" method="post">
+  姓名：<input type="text" name="name"><br><br>
+  请选择你所在的年级：
+<select name="nianji">
+    <option value="一年级">一年级</option>
+    <option value="二年级">二年级</option>
+    <option value="三年级">三年级</option>
+    <option value="四年级">四年级</option>
+  </select><br><br>
+  请输入题目个数：<input type="text" name="timugeshu"><br><br>
+  请输入参数个数：<input type="text" name="canshugeshu"><br><br>
+  请输入参数范围：<input type="text" name="canshufanwei"><br><br>
+</p>
+<tr>请选择需要的题型是否有正负数：
+  <input type="radio" name="tixing" value="有">有
+<input type="radio" name="tixing" value="无">无</tr><br>
+<tr>请选择需要的题型是否有乘除法：
+<input type="radio" name="tixing1" value="有">有
+<input type="radio" name="tixing1" value="无">无</tr><br>
+<tr>请选择需要的题型是否有余数：
+<input type="radio" name="tixing2" value="有">有
+<input type="radio" name="tixing2" value="无">无</tr><br>
+<tr>请选择需要的题型是否有括号：
+<input type="radio" name="tixing3" value="有">有
+<input type="radio" name="tixing3" value="无">无</tr><br>
+		<div class="det_text">
+			<table style="margin-bottom:50px; margin-top:100px;">
+			<div class="read_more">
+				 <a class="btn" href="题目.html#题目"><p class="bbbtn">提交</p></a>
+			</div>
+		<div class="clear"></div>
+</form>
+</body>
+</html>
+
+
+//Jsp文件
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>题目</title>
+<style type="text/css">
+body,td,th {
+	font-size: larger;
+}
+body {
+	background-image: url(image/3.jpg);
+}
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+</head>
+
+<body>
+<div style="width: 100%; font-family: 微软雅黑; text-align: center">
+      <marquee scrollamount=3  style="COLOR=000000 FILTER: shadow(color=000000 ); FONT-FAMILY: 隶书; FONT-SIZE: 25pt; WIDTH: 100%">欢迎来到四则运算乐园</marquee></div>
+<span id="localtime"></span>
+	<script type="text/javascript">
+		function showLocale(objD) {
+			var str, colorhead, colorfoot;
+			var yy = objD.getYear();
+			if (yy < 1900)
+				yy = yy + 1900;
+			var MM = objD.getMonth() + 1;
+			if (MM < 10)
+				MM = '0' + MM;
+			var dd = objD.getDate();
+			if (dd < 10)
+				dd = '0' + dd;
+			var hh = objD.getHours();
+			if (hh < 10)
+				hh = '0' + hh;
+			var mm = objD.getMinutes();
+			if (mm < 10)
+				mm = '0' + mm;
+			var ss = objD.getSeconds();
+			if (ss < 10)
+				ss = '0' + ss;
+			var ww = objD.getDay();
+			if (ww == 0)
+				colorhead = "<font color=\"#000000\">";
+			if (ww > 0 && ww < 6)
+				colorhead = "<font color=\"#000000\">";
+			if (ww == 6)
+				colorhead = "<font color=\"#000000\">";
+			if (ww == 0)
+				ww = "星期日";
+			if (ww == 1)
+				ww = "星期一";
+			if (ww == 2)
+				ww = "星期二";
+			if (ww == 3)
+				ww = "星期三";
+			if (ww == 4)
+				ww = "星期四";
+			if (ww == 5)
+				ww = "星期五";
+			if (ww == 6)
+				ww = "星期六";
+			colorfoot = "</font>"
+			str = colorhead + yy + "-" + MM + "-" + dd + " " + hh + ":" + mm
+					+ ":" + ss + "  " + ww + colorfoot;
+			return (str);
+		}
+		function tick() {
+			var today;
+			today = new Date();
+			document.getElementById("localtime").innerHTML = showLocale(today);
+			window.setTimeout("tick()", 1000);
+		}
+		tick();
+	</script>
+	<br />
+<!-- start header -->
+<div class="header1">
+<div class="wrap">
+	<div class="soc_icons">
+		<ul class="tt-wrapper">
+	<div class="clear"></div>
+<!-- start header_left1 -->
+<div class="header_left1">
+	<div class="logo">
+		<h1 align="center"><a href="sizeyunsuan.html">快乐答题</a></h1>
+	</div>
+	<div class="h_nav">
+	</div>
+</div>
+
+<!-- start main -->
+<div class="main">
+<div class="wrap">
+	<div class="details"><!-- start details -->
+    <p>
+  <from action="四则运算网页版.jsp" method="post">
+  根据你的选择，题目是：
+  <span id="localtime"></span>
+	<script type="text/javascript">
+	function showLocale(objD) {
+		var num,rnum,kh,fhn;
+		var[][]sz=new var[num][4];
+		var[][]jg=new var[num][4];    //计算结果
+		var fhnum=0;    //运算符号的数字表示
+		var[][] fh=new var[num][3];    //运算符号的符号表示
+		var[] kh1=new var[num];   //记录前括号的位置
+		var[] kh2=new var[num];   //记录后括号的位置
+		var zq = 0,cw = 0;     //记录答题正确和错误的个数
+		for(var l=0;l<num;l++)
+		{
+			var sznum=2+random.nextInt(3);   //每道题的数字个数 2-4
+			for(var i=0;i<sznum;i++)   //生成数字
+			{
+				sz[l][i]=1+random.nextInt(rnum);     //控制数的范围
+			}
+			for(var i=0;i<sznum-1;i++)    //生成运算符号
+			{
+				if(fhn==1)   //计算有乘除法
+				{
+					fhnum=random.nextInt(4);
+					if(fhnum==0)
+						fh[l][i]='+';
+					if(fhnum==1)
+						fh[l][i]='-';
+					if(fhnum==2)
+						fh[l][i]='*';
+					if(fhnum==3)
+					{
+						fh[l][i]='/';
+					}
+				}
+				if(fhn==2)   //计算无乘除法
+				{
+					fhnum=random.nextInt(2);
+					if(fhnum==0)
+						fh[l][i]='+';
+					if(fhnum==1)
+						fh[l][i]='-';
+				}
+			}
+			System.out.print(l+1+": ");
+			if(sznum==2)   //如果一个题只有2个数字时不加括号
+				kh=2;
+			if(kh==1)  //有括号时
+			{
+				kh1[l]=random.nextInt(sznum-1);    //前括号后面的数字的位置0~sznum-2
+				kh2[l]=random.nextInt(sznum-1-kh1[l])+kh1[l]+1;    //后括号前面数字的位置kh1+1~sznum-1
+				if(kh1[l]==0&&kh2[l]==sznum-1)    //防止括号将整个式子括住
+				{
+					for(;;)
+					{
+						kh2[l]=random.nextInt(sznum-1-kh1[l])+kh1[l]+1;    //后括号的位置kh1+1~sznum
+						if(kh2[l]!=sznum-1)
+							break;
+					}
+				}
+				jg[l][0]=sz[l][0];
+				for(var i=0;i<kh1[l];i++)
+				{
+					System.out.print(sz[l][i]);
+					System.out.print(fh[l][i]);
+					//输出式子
+					//计算结果
+					if(fh[l][i]=='+')
+						jg[l][i+1]=jg[l][i]+sz[l][i+1];
+					if(fh[l][i]=='-')
+					{
+							for(;;)
+							{
+								if(jg[l][i]>sz[l][i+1])
+									break;
+								else
+									sz[l][i+1]=1+(int)random.nextInt(rnum);
+							}
+						jg[l][i+1]=jg[l][i]-sz[l][i+1];
+					}
+					if(fh[l][i]=='*')
+						jg[l][i+1]=jg[l][i]*sz[l][i+1];
+					if(fh[l][i]=='/')
+					{
+						for(;;)
+						{
+							if(jg[l][i]<sz[l][i+1])
+							{
+								sz[l][i+1]=random.nextInt(rnum)+1;
+							}
+							else 
+								break;
+						}
+						jg[l][i+1]=jg[l][i]/sz[l][i+1];
+					}
+				}
+				System.out.print("(");
+				for(int i=kh1[l];i<kh2[l];i++)
+				{
+					System.out.print(sz[l][i]);
+					System.out.print(fh[l][i]);
+					//输出式子
+					//计算结果
+					//计算结果
+					if(fh[l][i]=='+')
+						jg[l][i+1]=jg[l][i]+sz[l][i+1];
+					if(fh[l][i]=='-')
+					{
+							for(;;)
+							{
+								if(jg[l][i]>sz[l][i+1])
+									break;
+								else
+									sz[l][i+1]=1+(int)random.nextInt(rnum);
+							}
+						jg[l][i+1]=jg[l][i]-sz[l][i+1];
+					}
+					if(fh[l][i]=='*')
+						jg[l][i+1]=jg[l][i]*sz[l][i+1];
+					if(fh[l][i]=='/')
+					{
+						for(;;)
+						{
+							if(jg[l][i]<sz[l][i+1])
+							{
+								sz[l][i+1]=random.nextInt(rnum)+1;
+							}
+							else 
+								break;
+						}
+						jg[l][i+1]=jg[l][i]/sz[l][i+1];
+					}
+				}
+				System.out.print(sz[l][kh2[l]]+")");
+				//检验式子是否重复，重复执行下面的替换最后一个数使其不在重复
+				for(var t=0;t<l;t++)
+				{
+					for(var i=0;i<sznum;i++)
+					{
+						for(;;)
+						{
+							if(sz[l][i]==sz[t][i]&&fh[l][i]==fh[t][i]&&kh1[l]==kh1[t]&&kh2[l]==kh2[t])
+								sz[l][sznum]=random.nextInt(rnum)+1;
+							else
+								break;
+						}
+					}
+				}
+				for(var i=kh2[l]+1;i<sznum;i++)
+				{
+					System.out.print(fh[l][i]);
+					System.out.print(sz[l][i+1]);
+					//输出式子
+					//计算结果
+					if(fh[l][i]=='+')
+						jg[l][i+1]=jg[l][i]+sz[l][i+1];
+					if(fh[l][i]=='-')
+					{
+							for(;;)
+							{
+								if(jg[l][i]>sz[l][i+1])
+									break;
+								else
+									sz[l][i+1]=1+(int)random.nextInt(rnum);
+							}
+						jg[l][i+1]=jg[l][i]-sz[l][i+1];
+					}
+					if(fh[l][i]=='*')
+						jg[l][i+1]=jg[l][i]*sz[l][i+1];
+					if(fh[l][i]=='/')
+					{
+						for(;;)
+						{
+							if(jg[l][i]<sz[l][i+1])
+							{
+								sz[l][i+1]=random.nextInt(rnum)+1;
+							}
+							else 
+								break;
+						}
+						jg[l][i+1]=jg[l][i]/sz[l][i+1];
+					}
+				}
+				System.out.print('=');
+			}
+			if(kh==2)    //没有括号时
+			{
+				jg[l][0]=sz[l][0];
+				for(var i=0;i<sznum-1;i++)
+				{
+					System.out.print(sz[l][i]);  //输出式子
+					System.out.print(fh[l][i]);
+					//计算结果
+					if(fh[l][i]=='+')
+						jg[l][i+1]=jg[l][i]+sz[l][i+1];
+					if(fh[l][i]=='-')
+					{
+							for(;;)
+							{
+								if(jg[l][i]>sz[l][i+1])
+									break;
+								else
+									sz[l][i+1]=1+(int)random.nextInt(rnum);
+							}
+						jg[l][i+1]=jg[l][i]-sz[l][i+1];
+					}
+					if(fh[l][i]=='*')
+						jg[l][i+1]=jg[l][i]*sz[l][i+1];
+					if(fh[l][i]=='/')
+					{
+						for(;;)
+						{
+							if(jg[l][i]<sz[l][i+1])
+							{
+								sz[l][i+1]=random.nextInt(rnum)+1;
+							}
+							else 
+								break;
+						}
+						jg[l][i+1]=jg[l][i]/sz[l][i+1];
+					}
+				}
+				//检验式子是否重复，重复执行下面的替换最后一个数使其不在重复
+				for(var t=0;t<l;t++)
+				{
+					for(var i=0;i<sznum;i++)
+					{
+						for(;;)
+						{
+							if(sz[l][i]==sz[t][i]&&fh[l][i]==fh[t][i])
+								sz[l][sznum]=random.nextInt(rnum)+1;
+							else
+								break;
+						}
+					}
+				}
+				System.out.print(sz[l][sznum-1]+"=");
+			}
+			int result = in.nextInt();  //输入结果
+			if(result==jg[l][sznum-1])
+			{
+				System.out.println("输入结果准确！你好棒！");
+				zq++;
+			}
+			else
+			{
+				System.out.println("输入结果错误！下次努力！");
+				cw++;
+			}
+		}
+		System.out.println("正确的个数："+zq+"\n错误的个数："+cw);
+	}
+}
+		<div class="det_text">
+			<table style="margin-bottom:50px; margin-top:100px;">
+			<div class="read_more">
+				 <a class="btn" href="答题.html#答题"><p class="bbbtn">开始答题</p></a>
+			</div>
+		<div class="clear"></div>
+	<!-- end details -->
+
+<!-- start footer -->
+<div class="footer_bg">
+<div class="wrap">
+	<div class="footer">
+		<div class="span_of_4">
+			<div class="clear"></div>
+		</div>
+		<div class="footer_top">
+			<div class="copy">
+			</div>
+</body>
+</html>
+
+
+//第二个jsp文件
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>答题</title>
+<style type="text/css">
+body,td,th {
+	font-size: larger;
+}
+body {
+	background-image: url(image/3.jpg);
+}
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+</head>
+<body>
+<div style="width: 100%; font-family: 微软雅黑; text-align: center">
+      <marquee scrollamount=3  style="COLOR=000000 FILTER: shadow(color=000000 ); FONT-FAMILY: 隶书; FONT-SIZE: 25pt; WIDTH: 100%">欢迎来到四则运算乐园</marquee></div>
+<span id="localtime"></span>
+	<script type="text/javascript">
+		function showLocale(objD) {
+			var str, colorhead, colorfoot;
+			var yy = objD.getYear();
+			if (yy < 1900)
+				yy = yy + 1900;
+			var MM = objD.getMonth() + 1;
+			if (MM < 10)
+				MM = '0' + MM;
+			var dd = objD.getDate();
+			if (dd < 10)
+				dd = '0' + dd;
+			var hh = objD.getHours();
+			if (hh < 10)
+				hh = '0' + hh;
+			var mm = objD.getMinutes();
+			if (mm < 10)
+				mm = '0' + mm;
+			var ss = objD.getSeconds();
+			if (ss < 10)
+				ss = '0' + ss;
+			var ww = objD.getDay();
+			if (ww == 0)
+				colorhead = "<font color=\"#000000\">";
+			if (ww > 0 && ww < 6)
+				colorhead = "<font color=\"#000000\">";
+			if (ww == 6)
+				colorhead = "<font color=\"#000000\">";
+			if (ww == 0)
+				ww = "星期日";
+			if (ww == 1)
+				ww = "星期一";
+			if (ww == 2)
+				ww = "星期二";
+			if (ww == 3)
+				ww = "星期三";
+			if (ww == 4)
+				ww = "星期四";
+			if (ww == 5)
+				ww = "星期五";
+			if (ww == 6)
+				ww = "星期六";
+			colorfoot = "</font>"
+			str = colorhead + yy + "-" + MM + "-" + dd + " " + hh + ":" + mm
+					+ ":" + ss + "  " + ww + colorfoot;
+			return (str);
+		}
+		function tick() {
+			var today;
+			today = new Date();
+			document.getElementById("localtime").innerHTML = showLocale(today);
+			window.setTimeout("tick()", 1000);
+		}
+		tick();
+	</script>
+	<br />
+<!-- start header -->
+<div class="header1">
+<div class="wrap">
+	<div class="soc_icons">
+		<ul class="tt-wrapper">
+	<div class="clear"></div>
+<!-- start header_left1 -->
+<div class="header_left1">
+	<div class="logo">
+		<h1 align="center"><a href="sizeyunsuan.html">快乐答题</a></h1>
+	</div>
+	<div class="h_nav">
+	</div>
+</div>
+
+<!-- start main -->
+<div class="main">
+<div class="wrap">
+	<div class="details"><!-- start details -->
+    <p>
+  <from action="四则运算网页版.jsp" method="post">
+  请输入您的答案：<input type="text" name="daan"><br><br>
+		<div class="det_text">
+			<table style="margin-bottom:50px; margin-top:100px;">
+			<div class="read_more">
+				 <a class="btn" href="timuxuanze.html#题目选择"><p class="bbbtn">返回</p></a>
+			</div>
+		<div class="clear"></div>
+	<!-- end details -->
+
+<!-- start footer -->
+<div class="footer_bg">
+<div class="wrap">
+	<div class="footer">
+		<div class="span_of_4">
+			<div class="clear"></div>
+		</div>
+		<div class="footer_top">
+			<div class="copy">
+			</div>
+</body>
+</html>
