@@ -1,0 +1,60 @@
+//输入数字串形成一个环，找出子数组的和的最大值   谷伟华、牛俊燕    2016.4.13
+#include<iostream>
+using namespace std;
+typedef struct LNode
+{
+	int num;   //数字域
+	struct LNode *next;   //指针域
+}LNode,*LinkList;
+void CreateList_H(LinkList &L,int n) //后插法，初始化一个n个节点的循环链表
+{ //正位序输入n个元素的值，建立带表头结点的单链表L
+	L=new LNode;
+	L->next=NULL;  //先建立一个带头结点的空链表
+    LinkList r,p;
+	r=L;            //尾指针r指向头结点
+	for(int i=0;i<n;i++)
+	{
+		p=new LNode;  //生成新的结点
+		cout<<"请输入第"<<i+1<<"个数字："<<endl;
+		cin>>p->num;   //输入元素值赋给新结点*p的数字
+		p->next=NULL; r->next=p; //将新结点*p插入到尾结点*r之后
+		r=p;           //r指向新的尾结点*p
+	}
+	r->next=L->next;  //指针r指向头结点，形成循环单链表
+}
+void main()
+{
+	LinkList L;
+	int n;
+	cout<<"请输入数字的个数：";
+	cin>>n;
+	CreateList_H(L,n);  //调用函数，创建列表
+	int i,j,bj,max,Max;
+	LNode *q;  //建立新的指针*q，让它在循环单列表上进行移动
+	q=L;
+	Max=q->next->num;    //Max初始化初始化为第1个数字的值
+	for(i=0;i<n;i++)  //循环n次，
+	{
+		bj=q->next->num;    //bj初始化为第i个数字的值
+		max=q->next->num;   //max初始化为第i个数字的值
+		for(j=i+1;j<i+n-1;j++)  //从j=i+1开始循环n-1次
+		{
+			if(bj>0)
+			{ //如果前j-1个数字的子数组的和的最大值>0，那么max=bj+第j个数字
+				max=bj+q->next->next->num;
+			}
+			else
+			{ //否则max=第j个数字
+				max=q->next->next->num;
+			}
+			q->next=q->next->next;   //q指针向后移动
+			bj=max;   //将max赋给bj
+		}
+		if(Max<max)
+		{   //每一轮的max和Max比较取最大值
+			Max=max;
+		}
+		q->next=q->next->next;   //q指针向后移动
+	}
+	cout<<"子数组的最大值是："<<Max<<endl;    //输出最大值
+}
